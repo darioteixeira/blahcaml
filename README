@@ -1,0 +1,62 @@
+=========================================================================
+|			README for Blahcaml				|
+|									|
+| Dario Teixeira (dario.teixeira@yahoo.com)				|
+| October 2008								|
+=========================================================================
+
+1. Overview
+===========
+
+Blahcaml provides basic Ocaml bindings to the Blahtex library [1].
+Blahtex is written in C++, and aims to the conversion of TeX equations
+intyo MathML.  Blahtex was originally designed by David Harvey, but is
+currently maintained by Gilles van Assche.
+
+[1]: http://gva.noekeon.org/blahtexml/
+
+
+2. Facilities
+=============
+
+Presently, Blahcaml is composed of a single homonymous module with only
+one function.  This function, Blahcaml.unsafe_mathml_from_tex, takes as
+input a UTF8 string containing an equation in TeX format, and returns
+also a UTF8 string containing the same equation in MathML.  Note that
+Blahtex makes no attempt at checking for malicious strings, and neither
+does Blahcaml.  Hence the "unsafe" attached to the function name.
+(Safe versions will be added in the future).
+
+
+3. Dependencies
+===============
+
+On the Ocaml side, Blahcaml depends on ExtLib for the UTF8 module.
+It is however trivial to recompile it to use the Camomile or Ocaml
+Batteries version of the module.
+
+There is no need to get the Blahtex code because the Blahcaml tarball
+ships with a snapshot of the relevant code from Blahtex.  This turned
+out to be the most practical solution because presently the Blahtex
+source has no provisions for building just the library and assumes that
+developers will just copy the code into their own projects.
+
+The Blahtex code is contained in the 'blahtexcore' and 'unicodeconverter'
+directories, and except for the Makefiles, is bundled in a pristine form.
+The copyright of this code is of course that of the Blahtex authors.
+
+
+4. Building and installing
+==========================
+
+Typing "make" should suffice to build the Blahtex code and the Blahcaml
+bindings.  Note that the C++ portions require g++.  After building,
+"make install" will perform a findlib installation.
+
+
+5. License
+==========
+
+Blahcaml is licensed under the terms of the GPL version 2.  The Blahtex
+portions bundled with the Blahcaml tarball are licensed in the same terms.
+
