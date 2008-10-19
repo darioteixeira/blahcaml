@@ -9,8 +9,8 @@
 ===========
 
 Blahcaml provides basic Ocaml bindings to the Blahtex library [1].
-Blahtex is written in C++, and aims to the conversion of TeX equations
-intyo MathML.  Blahtex was originally designed by David Harvey, but is
+Blahtex is written in C++, and aims at the conversion of TeX equations
+into MathML.  Blahtex was originally designed by David Harvey, but is
 currently maintained by Gilles van Assche.
 
 [1]: http://gva.noekeon.org/blahtexml/
