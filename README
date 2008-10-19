@@ -42,7 +42,7 @@ source has no provisions for building just the library and assumes that
 developers will just copy the code into their own projects.
 
 The Blahtex code is contained in the 'blahtexcore' and 'unicodeconverter'
-directories, and except for the Makefiles, is bundled in a pristine form.
+directories, and except for the makefiles, is bundled in a pristine form.
 The copyright of this code is of course that of the Blahtex authors.
 
 
