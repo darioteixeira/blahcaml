@@ -3,7 +3,7 @@ OCAML_STDLIB=$(shell ocamlfind printconf stdlib)
 BLAH_DIR=../blahtexcore
 BLAH_OBJS=$(shell ls $(BLAH_DIR)/*.o)
 
-CONV_DIR=../uconv
+CONV_DIR=../unicodeconverter
 CONV_OBJS=$(shell ls $(CONV_DIR)/*.o)
 
 TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa libblahcaml.a
