@@ -1,17 +1,19 @@
-all: dtd_pickle_ro.o
+all: pickle_ro.o
 
-dtd_pickle_ro.o: dtd_pickle_rw.o
+pickle_ro.o: pickle_rw.o
 	objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
 
-dtd_pickle_rw.o: dtd_pickle.dat
+pickle_rw.o: pickle.dat
 	ld -r -b binary -o $@ $<
 
-dtd_pickle.dat: dtd_pickler
+pickle.dat: dtd_pickler
 	./dtd_pickler > $@
 
 dtd_pickler: dtd_pickler.ml
 	ocamlfind ocamlc -package camlzip,pxp -linkpkg $< -o $@
 
+install:
+
 clean:
-	rm -f *.cm[io] *.o dtd_pickle.dat dtd_pickler
+	rm -f *.cm[iox] *.o pickle.dat dtd_pickler
 
