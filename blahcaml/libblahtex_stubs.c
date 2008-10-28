@@ -1,3 +1,13 @@
+/********************************************************************************/
+/*	Stubs for libblahtex.
+
+	Copyright (c) 2008 Dario Teixeira (dario.teixeira@yahoo.com)
+
+	This software is distributed under the terms of the GNU GPL version 2.
+	See LICENSE file for full license text.
+*/
+/********************************************************************************/
+
 #include "Interface.h"
 #include "UnicodeConverter.h"
 
@@ -8,6 +18,11 @@ extern "C"
 	#include <caml/alloc.h>
 	}
 
+
+/********************************************************************************/
+/* The unsafe_mathml_from_tex stub function.  It interfaces between the Ocaml	*/
+/* side and the C++ functions that actually do all the work.			*/
+/********************************************************************************/
 
 extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 

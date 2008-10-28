@@ -15,6 +15,8 @@
 
 
 /********************************************************************************/
+/* Definition of macros that simplify the declaration of the external pickles.	*/
+/********************************************************************************/
 
 #define BIN_START(name)		_binary_##name##_start
 #define BIN_END(name)		_binary_##name##_end
@@ -26,6 +28,8 @@
 #define REF_BIN(name)		{BIN_START(name), BIN_END(name)}
 
 
+/********************************************************************************/
+/* Declaration of the external pickles. 					*/
 /********************************************************************************/
 
 DECL_BIN(mathml2_dtd)
@@ -52,6 +56,9 @@ DECL_BIN(isopub_ent)
 DECL_BIN(mmlextra_ent)
 DECL_BIN(mmlalias_ent)
 
+
+/********************************************************************************/
+/* Declaration of the array containing the start and end pointers to pickles.	*/
 /********************************************************************************/
 
 typedef struct
@@ -88,6 +95,9 @@ static const pickle_t pickles [] =
 	};
 
 
+/********************************************************************************/
+/* The get_pickle function.  It interfaces with the Ocaml side, returning the	*/
+/* specified pickle as a string.						*/
 /********************************************************************************/
 
 CAMLprim value get_pickle (value v_file)

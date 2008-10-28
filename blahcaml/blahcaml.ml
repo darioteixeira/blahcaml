@@ -1,5 +1,11 @@
 (********************************************************************************)
-(*										*)
+(*	Implementation file for the Blahcaml library.
+
+	Copyright (c) 2008 Dario Teixeira (dario.teixeira@yahoo.com)
+
+	This software is distributed under the terms of the GNU GPL version 2.
+	See LICENSE file for full license text.
+*)
 (********************************************************************************)
 
 open Pxp_core_types
@@ -8,9 +14,12 @@ open Pxp_yacc
 
 
 (********************************************************************************)
-(*										*)
+(*	{2 Privates types and functions}					*)
 (********************************************************************************)
 
+(**	The [pickle_t] type enumerates all pickled files of the MathML2 DTD.
+	These must be declared in the same order as that found in the C module.
+*)
 type pickle_t =
 	| Pickled_mathml2_dtd
 	| Pickled_mathml2_qname_1_mod
@@ -37,12 +46,14 @@ type pickle_t =
 	| Pickled_mmlalias_ent
 
 
-(********************************************************************************)
-(*										*)
-(********************************************************************************)
-
+(**	The [get_pickle] function is external, since it is actually declared
+	on the C module.
+*)
 external get_pickle: pickle_t -> string = "get_pickle"
 
+
+(**	Mapping between DTD PUBLIC identifiers and the pickle.
+*)
 let catalog =
 	[
 	(Public ("-//W3C//ENTITIES MathML 2.0 Qualified Names 1.0//EN", ""), get_pickle Pickled_mathml2_qname_1_mod);
@@ -70,9 +81,13 @@ let catalog =
 	]
 
 
+(**	The parsed DTD.  If [None], the DTD has not been parsed yet.
+*)
 let static_dtd = ref None
 
 
+(**	The default configuration for parsing DTD and XML.
+*)
 let config =
 	{
 	default_config with
@@ -81,35 +96,57 @@ let config =
 
 
 (********************************************************************************)
-(*										*)
+(*	{2 Public functions}							*)
 (********************************************************************************)
 
+(**	DTD initialisation function.  This function can take several seconds to
+	complete, but only needs to be called once.  If you don't worry about
+	safety and only invoke {!unsafe_mathml_from_tex}, then you never need to
+	run this function.  On the other hand, if you call {!sanitize_mathml} or
+	{!safe_mathml_from_tex}, and the DTD has never been manually initialised,
+	then this function will automatically be invoked.  Therefore, if you want
+	predictability on the runtime performance of the sanitisation functions,
+	you should invoke [init_dtd] during the initialisation stage of your
+	programme.
+*)
 let init_dtd () =
 	try
 		let resolver = new Pxp_reader.lookup_id_as_string catalog in
 		let dtd = parse_dtd_entity config (from_string ~alt:[resolver] (get_pickle Pickled_mathml2_dtd))
 		in static_dtd := Some dtd
 	with
-		exc -> print_endline (Pxp_types.string_of_exn exc)
+		exc ->
+			print_endline (Pxp_types.string_of_exn exc);
+			failwith "Internal error during parsing of built-in MathML2 DTD"
 
 
+(**	Given a string containing potentially unsafe MathML, this function makes
+	sure the markup conforms to the MathML2 DTD.  If safe, the function returns
+	the original string.  If, however, the string does not conform to the DTD,
+	an exception is raised.
+*)
 let sanitize_mathml unsafe_mathml =
 	let rec get_dtd () = match !static_dtd with
 		| Some dtd	-> dtd
 		| None		-> init_dtd (); get_dtd () in
-	let dtd = get_dtd ()
-	in try
-                let _ = Pxp_yacc.parse_content_entity config (from_string unsafe_mathml) dtd default_spec in
-		unsafe_mathml
-        with
-                exc ->
-			print_endline (Pxp_types.string_of_exn exc);
-			failwith "oops"
+	let dtd = get_dtd () in
+	let _ = Pxp_yacc.parse_content_entity config (from_string unsafe_mathml) dtd default_spec
+	in unsafe_mathml
 
 
+(**	Converts a string containing an equation in TeX format into another string
+	containing the same equation in MathML.  No checking is done to make sure
+	the result conforms to the MathML2 DTD!  If that assurance is required
+	please use the {!safe_mathml_from_tex}.
+*)
 external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 
 
+(**	Converts a string containing an equation in TeX format into another string
+	containing the same equation in MathML.  The resulting string is checked
+	to make sure it conforms to the MathML2 DTD.  If it does not, an exception
+	is raised.
+*)
 let safe_mathml_from_tex tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex tex_str
 	in sanitize_mathml unsafe_mathml
