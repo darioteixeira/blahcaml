@@ -16,3 +16,6 @@ install:
 
 clean:
 	rm -f *.cm[iox] test.byte test.native
+
+cleanall: clean
+

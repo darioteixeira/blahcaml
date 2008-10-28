@@ -11,3 +11,5 @@ install:
 clean:
 	rm -f $(OBJS)
 
+cleanall: clean
+

@@ -8,6 +8,10 @@
 *)
 (********************************************************************************)
 
+(**	The [Blahcaml] module defines functions for the conversion of equations
+	in TeX format into MathML.
+*)
+
 open Pxp_core_types
 open Pxp_document
 open Pxp_yacc
@@ -99,15 +103,14 @@ let config =
 (*	{2 Public functions}							*)
 (********************************************************************************)
 
-(**	DTD initialisation function.  This function can take several seconds to
-	complete, but only needs to be called once.  If you don't worry about
+(**	Initilisation of the MathML2 DTD.  This function can take several seconds
+	to complete, but only needs to be called once.  If you don't worry about
 	safety and only invoke {!unsafe_mathml_from_tex}, then you never need to
 	run this function.  On the other hand, if you call {!sanitize_mathml} or
 	{!safe_mathml_from_tex}, and the DTD has never been manually initialised,
 	then this function will automatically be invoked.  Therefore, if you want
 	predictability on the runtime performance of the sanitisation functions,
-	you should invoke [init_dtd] during the initialisation stage of your
-	programme.
+	you should invoke it during the initialisation stage of your programme.
 *)
 let init_dtd () =
 	try
@@ -121,9 +124,11 @@ let init_dtd () =
 
 
 (**	Given a string containing potentially unsafe MathML, this function makes
-	sure the markup conforms to the MathML2 DTD.  If safe, the function returns
+	sure the it conforms to the MathML2 DTD.  If safe, the function returns
 	the original string.  If, however, the string does not conform to the DTD,
-	an exception is raised.
+	an exception is raised.  See the {{:http://projects.camlcity.org/projects/pxp.html}PXP
+	documentation} for the meaning of these exceptions.  Note that if the DTD
+	has never been initialised, this function will automatically invoke {!init_dtd}.
 *)
 let sanitize_mathml unsafe_mathml =
 	let rec get_dtd () = match !static_dtd with
@@ -145,7 +150,9 @@ external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 (**	Converts a string containing an equation in TeX format into another string
 	containing the same equation in MathML.  The resulting string is checked
 	to make sure it conforms to the MathML2 DTD.  If it does not, an exception
-	is raised.
+	is raised.  See the {{:http://projects.camlcity.org/projects/pxp.html}PXP
+        documentation} for the meaning of these exceptions.  Note that if the DTD
+        has never been initialised, this function will automatically invoke {!init_dtd}.
 *)
 let safe_mathml_from_tex tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex tex_str

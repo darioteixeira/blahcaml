@@ -17,3 +17,5 @@ install:
 clean:
 	rm -f *.o
 
+cleanall: clean
+
