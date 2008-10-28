@@ -12,7 +12,7 @@
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
-
+#include <caml/fail.h>
 
 /********************************************************************************/
 /* Definition of macros that simplify the declaration of the external pickles.	*/
@@ -67,7 +67,10 @@ typedef struct
 	char *end;
 	} pickle_t;
 
-static const pickle_t pickles [] =
+
+#define NUM_PICKLES 23
+
+static const pickle_t pickles [NUM_PICKLES] =
 	{
 	REF_BIN(mathml2_dtd),
 	REF_BIN(mathml2_qname_1_mod),
@@ -106,8 +109,13 @@ CAMLprim value get_pickle (value v_file)
 	CAMLparam1 (v_file);
 	CAMLlocal1 (ml_pickle);
 
-	pickle_t pickle = pickles [Int_val (v_file)];
+	int pickle_idx = Int_val (v_file);
+	if ((pickle_idx < 0) || (pickle_idx >= NUM_PICKLES))
+		{
+		caml_invalid_argument ("Pickle index out of range");
+		}
 
+	pickle_t pickle = pickles [Int_val (v_file)];
 	size_t pickle_size = pickle.end - pickle.start;
 	ml_pickle = caml_alloc_string (pickle_size);
 	memcpy ((void*) String_val (ml_pickle), (void*) pickle.start, pickle_size);
