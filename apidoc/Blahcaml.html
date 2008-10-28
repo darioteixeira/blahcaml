@@ -15,7 +15,10 @@
 <center><h1>Module <a href="type_Blahcaml.html">Blahcaml</a></h1></center>
 <br>
 <pre><span class="keyword">module</span> Blahcaml: <code class="code">sig</code> <a href="Blahcaml.html">..</a> <code class="code">end</code></pre>The <code class="code">Blahcaml</code> module defines functions for the conversion of TeX
-	equations into MathML.<br>
+	equations into MathML.  Important note: all the strings used in
+	this module are assumed to be encoded in UTF-8.  Use
+	<a href="http://camomile.sourceforge.net/">Camomile</a> if you
+	want to process the string's characters.<br>
 <hr width="100%">
 <pre><span class="keyword">val</span> <a name="VALinit_dtd"></a>init_dtd : <code class="type">unit -> unit</code></pre><div class="info">
 Initialisation of the MathML2 DTD.  This function can take several seconds

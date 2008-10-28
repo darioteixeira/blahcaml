@@ -9,7 +9,10 @@
 (********************************************************************************)
 
 (**	The [Blahcaml] module defines functions for the conversion of TeX
-	equations into MathML.
+	equations into MathML.  Important note: all the strings used in
+	this module are assumed to be encoded in UTF-8.  Use
+	{{:http://camomile.sourceforge.net/}Camomile} if you
+	want to process the string's characters.
 *)
 
 open Pxp_core_types
