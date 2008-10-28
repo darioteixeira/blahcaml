@@ -9,7 +9,7 @@ CONV_OBJS=$(shell ls $(CONV_DIR)/*.o)
 PICKLE_DIR=../mathml2dtd
 PICKLE_OBJS=$(shell ls $(PICKLE_DIR)/*.o)
 
-TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa libblahcaml.a
+TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a
 
 
 all: build
