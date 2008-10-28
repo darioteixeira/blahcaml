@@ -1,5 +1,5 @@
 =========================================================================
-|			README for Blahcaml				|
+|			README for Blahcaml 1.0				|
 |									|
 | Dario Teixeira (dario.teixeira@yahoo.com)				|
 | October 2008								|
@@ -19,21 +19,20 @@ currently maintained by Gilles van Assche.
 2. Facilities
 =============
 
-Presently, Blahcaml is composed of a single homonymous module with only
-one function.  This function, Blahcaml.unsafe_mathml_from_tex, takes as
-input a UTF8 string containing an equation in TeX format, and returns
-also a UTF8 string containing the same equation in MathML.  Note that
-Blahtex makes no attempt at checking for malicious strings, and neither
-does Blahcaml.  Hence the "unsafe" attached to the function name.
-(Safe versions will be added in the future).
+Presently, Blahcaml is composed of a single homonymous module.  The
+module contains a basic function (named Blahcaml.unsafe_mathml_from_tex)
+for performing an unsafe conversion of TeX into MathML, and three
+functions that add some degree of safety to the conversion (by this
+we mean that the generated MathML is checked for conformance against
+the official MathML2 DTD).
 
 
 3. Dependencies
 ===============
 
-On the Ocaml side, Blahcaml depends on ExtLib for the UTF8 module.
-It is however trivial to recompile it to use the Camomile or Ocaml
-Batteries version of the module.
+On the Ocaml side, Blahcaml depends on PXP.  PXP is used by the "safe"
+functions for validating the generated MathML against the official
+MathML2 DTD.
 
 There is no need to get the Blahtex code because the Blahcaml tarball
 ships with a snapshot of the relevant code from Blahtex.  This turned
@@ -51,7 +50,8 @@ The copyright of this code is of course that of the Blahtex authors.
 
 Typing "make" should suffice to build the Blahtex code and the Blahcaml
 bindings.  Note that the C++ portions require g++.  After building,
-"make install" will perform a findlib installation.
+"make install" will perform a findlib installation.  To generate the
+ocamldoc APIDOC, use "make apidoc".
 
 
 5. License
@@ -59,4 +59,6 @@ bindings.  Note that the C++ portions require g++.  After building,
 
 Blahcaml is licensed under the terms of the GPL version 2.  The Blahtex
 portions bundled with the Blahcaml tarball are licensed in the same terms.
+The tarball includes also the official MathML2 DTD from the W3C.  Check
+the COPYRIGHT file in the 'mathml2dtd/mathml2dtd.d' directory for details.
 
