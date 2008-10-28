@@ -6,7 +6,7 @@ all: $(OBJS)
 %.o: %.cpp
 	g++ -O2 -c $< -o $@
 
-apidoc:
+doc:
 
 install:
 

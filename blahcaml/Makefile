@@ -29,7 +29,7 @@ libmathml2dtd_stubs.o: libmathml2dtd_stubs.c
 blahcaml.cmi: blahcaml.mli
 	ocamlfind ocamlc -c $<
 
-apidoc:
+doc:
 	mkdir -p ../apidoc
 	ocamlfind ocamldoc -package pxp -v -html -d ../apidoc blahcaml.mli blahcaml.ml
 

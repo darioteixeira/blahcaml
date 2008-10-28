@@ -12,7 +12,7 @@ test.cmo: test.ml
 test.cmx: test.ml
 	ocamlfind ocamlopt -package blahcaml -c $<
 
-apidoc:
+doc:
 
 install:
 
