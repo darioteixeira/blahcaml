@@ -13,7 +13,7 @@ libmathml2dtd.a: $(TARGETS)
 	objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
 
 %.rw.o:
-	ld -r -b binary -o $@ $(MATHML2DTD_DIR)/$(basename $(basename $@))
+	(cd $(MATHML2DTD_DIR); ld -r -b binary -o ../$@ $(basename $(basename $@)))
 
 install:
 
