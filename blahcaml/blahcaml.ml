@@ -8,8 +8,8 @@
 *)
 (********************************************************************************)
 
-(**	The [Blahcaml] module defines functions for the conversion of equations
-	in TeX format into MathML.
+(**	The [Blahcaml] module defines functions for the conversion of TeX
+	equations into MathML.
 *)
 
 open Pxp_core_types
@@ -103,7 +103,7 @@ let config =
 (*	{2 Public functions}							*)
 (********************************************************************************)
 
-(**	Initilisation of the MathML2 DTD.  This function can take several seconds
+(**	Initialisation of the MathML2 DTD.  This function can take several seconds
 	to complete, but only needs to be called once.  If you don't worry about
 	safety and only invoke {!unsafe_mathml_from_tex}, then you never need to
 	run this function.  On the other hand, if you call {!sanitize_mathml} or
