@@ -1,3 +1,9 @@
-val sanitize_mathml: UTF8.t -> UTF8.t
-val unsafe_mathml_from_tex: UTF8.t -> UTF8.t
-val safe_mathml_from_tex: UTF8.t -> UTF8.t
+(********************************************************************************)
+(*										*)
+(********************************************************************************)
+
+val init_dtd: unit -> unit
+val sanitize_mathml: string -> string
+val unsafe_mathml_from_tex: string -> string
+val safe_mathml_from_tex: string -> string
+

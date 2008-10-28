@@ -4,10 +4,7 @@ SOURCES=$(wildcard $(MATHML2DTD_DIR)/mathml2.dtd $(MATHML2DTD_DIR)/mathml2-qname
 
 TARGETS=$(foreach SOURCE, $(SOURCES), $(notdir $(SOURCE)).ro.o)
 
-all: libmathml2dtd.a
-
-libmathml2dtd.a: $(TARGETS)
-	ar rc $@ $+
+all: $(TARGETS)
 
 %.ro.o: %.rw.o
 	objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
@@ -18,5 +15,5 @@ libmathml2dtd.a: $(TARGETS)
 install:
 
 clean:
-	rm -f *.o libmathml2dtd.a
+	rm -f *.o
 
