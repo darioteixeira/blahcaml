@@ -1,7 +1,7 @@
 name="Blahcaml"
 version="0.1"
 description="Ocaml bindings to Blahtex"
-requires="extlib,pxp"
+requires="pxp"
 archive(byte) = "blahcaml.cma"
 archive(native) = "blahcaml.cmxa"
 

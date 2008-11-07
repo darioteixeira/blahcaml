@@ -12,8 +12,12 @@ all: $(TARGETS)
 %.rw.o:
 	(cd $(MATHML2DTD_DIR); ld -r -b binary -o ../$@ $(basename $(basename $@)))
 
+doc:
+
 install:
 
 clean:
 	rm -f *.o
+
+cleanall: clean
 
