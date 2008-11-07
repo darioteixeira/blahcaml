@@ -16,111 +16,63 @@
 
 
 /********************************************************************************/
+/* The get_pickle function.  It interfaces with the Ocaml side, returning the	*/
+/* specified pickle as a string.						*/
+/********************************************************************************/
+
+CAMLprim value get_pickle (char *pickle_start, char *pickle_end)
+
+	{
+	CAMLparam0 ();
+	CAMLlocal1 (ml_pickle);
+
+	size_t pickle_size = pickle_end - pickle_start;
+	ml_pickle = caml_alloc_string (pickle_size);
+	memcpy ((void*) String_val (ml_pickle), (void*) pickle_start, pickle_size);
+
+	CAMLreturn (ml_pickle);
+	}
+
+
+/********************************************************************************/
 /* Definition of macros that simplify the declaration of the external pickles.	*/
 /********************************************************************************/
 
 #define BIN_START(name)		_binary_##name##_start
 #define BIN_END(name)		_binary_##name##_end
 
-#define DECL_BIN_START(name)	extern char BIN_START(name) []
-#define DECL_BIN_END(name)	extern char BIN_END(name) []
+#define DECL_BIN_START(name)	extern char BIN_START (name) []
+#define DECL_BIN_END(name)	extern char BIN_END (name) []
 
-#define DECL_BIN(name)		DECL_BIN_START(name); DECL_BIN_END(name);
-#define REF_BIN(name)		{BIN_START(name), BIN_END(name)}
+#define GET_BIN(name)		CAMLprim value get_##name (value v_unit) {CAMLparam1 (v_unit); CAMLreturn (get_pickle (BIN_START (name), BIN_END (name)));}
+#define ALL_BIN(name)		DECL_BIN_START (name); DECL_BIN_END (name); GET_BIN (name);
 
 
 /********************************************************************************/
 /* Declaration of the external pickles. 					*/
 /********************************************************************************/
 
-DECL_BIN (mathml2_dtd)
-DECL_BIN (mathml2_qname_1_mod)
-DECL_BIN (isoamsa_ent)
-DECL_BIN (isoamsb_ent)
-DECL_BIN (isoamsc_ent)
-DECL_BIN (isoamsn_ent)
-DECL_BIN (isoamso_ent)
-DECL_BIN (isoamsr_ent)
-DECL_BIN (isogrk3_ent)
-DECL_BIN (isomfrk_ent)
-DECL_BIN (isomopf_ent)
-DECL_BIN (isomscr_ent)
-DECL_BIN (isotech_ent)
-DECL_BIN (isobox_ent)
-DECL_BIN (isocyr1_ent)
-DECL_BIN (isocyr2_ent)
-DECL_BIN (isodia_ent)
-DECL_BIN (isolat1_ent)
-DECL_BIN (isolat2_ent)
-DECL_BIN (isonum_ent)
-DECL_BIN (isopub_ent)
-DECL_BIN (mmlextra_ent)
-DECL_BIN (mmlalias_ent)
-
-
-/********************************************************************************/
-/* Declaration of the array containing the start and end pointers to pickles.	*/
-/********************************************************************************/
-
-typedef struct
-	{
-	char *start;
-	char *end;
-	} pickle_t;
-
-
-#define NUM_PICKLES 23
-
-static const pickle_t pickles [NUM_PICKLES] =
-	{
-	REF_BIN (mathml2_dtd),
-	REF_BIN (mathml2_qname_1_mod),
-	REF_BIN (isoamsa_ent),
-	REF_BIN (isoamsb_ent),
-	REF_BIN (isoamsc_ent),
-	REF_BIN (isoamsn_ent),
-	REF_BIN (isoamso_ent),
-	REF_BIN (isoamsr_ent),
-	REF_BIN (isogrk3_ent),
-	REF_BIN (isomfrk_ent),
-	REF_BIN (isomopf_ent),
-	REF_BIN (isomscr_ent),
-	REF_BIN (isotech_ent),
-	REF_BIN (isobox_ent),
-	REF_BIN (isocyr1_ent),
-	REF_BIN (isocyr2_ent),
-	REF_BIN (isodia_ent),
-	REF_BIN (isolat1_ent),
-	REF_BIN (isolat2_ent),
-	REF_BIN (isonum_ent),
-	REF_BIN (isopub_ent),
-	REF_BIN (mmlextra_ent),
-	REF_BIN (mmlalias_ent)
-	};
-
-
-/********************************************************************************/
-/* The get_pickle function.  It interfaces with the Ocaml side, returning the	*/
-/* specified pickle as a string.						*/
-/********************************************************************************/
-
-CAMLprim value get_pickle (value v_file)
-
-	{
-	CAMLparam1 (v_file);
-	CAMLlocal1 (ml_pickle);
-
-	int pickle_idx = Int_val (v_file);
-	if ((pickle_idx < 0) || (pickle_idx >= NUM_PICKLES))
-		{
-		caml_invalid_argument ("Pickle index out of range");
-		}
-
-	pickle_t pickle = pickles [Int_val (v_file)];
-	size_t pickle_size = pickle.end - pickle.start;
-	ml_pickle = caml_alloc_string (pickle_size);
-	memcpy ((void*) String_val (ml_pickle), (void*) pickle.start, pickle_size);
-
-	CAMLreturn (ml_pickle);
-	}
+ALL_BIN (mathml2_dtd)
+ALL_BIN (mathml2_qname_1_mod)
+ALL_BIN (isoamsa_ent)
+ALL_BIN (isoamsb_ent)
+ALL_BIN (isoamsc_ent)
+ALL_BIN (isoamsn_ent)
+ALL_BIN (isoamso_ent)
+ALL_BIN (isoamsr_ent)
+ALL_BIN (isogrk3_ent)
+ALL_BIN (isomfrk_ent)
+ALL_BIN (isomopf_ent)
+ALL_BIN (isomscr_ent)
+ALL_BIN (isotech_ent)
+ALL_BIN (isobox_ent)
+ALL_BIN (isocyr1_ent)
+ALL_BIN (isocyr2_ent)
+ALL_BIN (isodia_ent)
+ALL_BIN (isolat1_ent)
+ALL_BIN (isolat2_ent)
+ALL_BIN (isonum_ent)
+ALL_BIN (isopub_ent)
+ALL_BIN (mmlextra_ent)
+ALL_BIN (mmlalias_ent)
 

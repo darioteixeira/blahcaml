@@ -1,3 +1,7 @@
+#
+# Configuration options
+#
+
 CC_OPS=-Wall -Werror
 CPP_OPS=-Werror
 
@@ -15,6 +19,10 @@ PICKLE_OBJS=$(shell ls $(PICKLE_DIR)/*.o)
 TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a
 
 
+#
+# Rules.
+#
+
 all: $(TARGETS)
 
 blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a: $(BLAH_OBJS) $(CONV_OBJS) $(PICKLE_OBJS) libmathml2dtd_stubs.o libblahtex_stubs.o blahcaml.ml
@@ -22,9 +30,6 @@ blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a: $(BLAH_OBJS) $(CONV_OBJS) $
 
 libblahtex_stubs.o: libblahtex_stubs.c
 	g++ $(CPP_OPS) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(CONV_DIR) -c $<
-
-libmathml2dtd_stubs.o: libmathml2dtd_stubs.c
-	gcc $(CC_OPS) -I $(OCAML_STDLIB) -c $<
 
 blahcaml.cmi: blahcaml.mli
 	ocamlfind ocamlc -c $<
