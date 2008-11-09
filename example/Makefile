@@ -12,12 +12,6 @@ test.cmo: test.ml
 test.cmx: test.ml
 	ocamlfind ocamlopt -package blahcaml -c $<
 
-doc:
-
-install:
-
 clean:
-	rm -f *.cm[iox] test.byte test.native
-
-cleanall: clean
+	rm -f *.cm[iox] test.o test.byte test.native
 
