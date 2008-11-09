@@ -1,8 +1,8 @@
 =========================================================================
-| README for Blahcaml 1.0						|
+| README for Blahcaml 1.1						|
 |									|
 | Dario Teixeira (dario.teixeira@yahoo.com)				|
-| October 2008								|
+| November 2008								|
 =========================================================================
 
 1. Overview
@@ -48,7 +48,7 @@ The copyright of this code is of course that of the Blahtex authors.
 Typing "make" should suffice to build the Blahtex code and the Blahcaml
 bindings.  Note that the C++ portions require g++.  After building,
 "make install" will perform a findlib installation.  To generate the
-ocamldoc API documentation, use "make doc".
+ocamldoc API documentation, use "make apidoc".
 
 
 5. License

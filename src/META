@@ -6,11 +6,11 @@ archive(byte) = "blahcaml.cma"
 archive(native) = "blahcaml.cmxa"
 
 package "mathml2dtd"
-	{
+	(
 	name = "MathML2DTD"
 	version = "1.1"
 	description = "Library with embedded MathML2 DTD"
 	archive(byte) = "mathml2dtd.cma"
 	archive(native) = "mathml2dtd.cmxa"
-	}
+	)
 

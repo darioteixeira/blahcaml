@@ -2,8 +2,7 @@
 # Configuration options
 #
 
-CC_OPS=-Wall -Werror
-CPP_OPS=-Werror
+CPP_OPS=-Werror -O2
 
 OCAML_STDLIB=$(shell ocamlfind printconf stdlib)
 
@@ -22,9 +21,11 @@ TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a
 # Rules.
 #
 
-all: $(TARGETS)
+all: lib
 
-$(TARGETS): $(BLAH_OBJS) $(CONV_OBJS) libblahtex_stubs.o blahcaml.ml
+lib: $(TARGETS)
+
+$(TARGETS): $(BLAH_OBJS) $(CONV_OBJS) libblahtex_stubs.o blahcaml.mli blahcaml.ml
 	ocamlmklib \
 		-verbose \
 		-ocamlc 'ocamlfind ocamlc -I $(PICKLE_DIR) -package pxp' \
@@ -34,20 +35,9 @@ $(TARGETS): $(BLAH_OBJS) $(CONV_OBJS) libblahtex_stubs.o blahcaml.ml
 libblahtex_stubs.o: libblahtex_stubs.c
 	g++ $(CPP_OPS) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(CONV_DIR) -c $<
 
-blahcaml.cmi: blahcaml.mli
-	ocamlfind ocamlc -c $<
-
-doc:
-	mkdir -p ../apidoc
-	ocamlfind ocamldoc -package pxp -v -html -d ../apidoc blahcaml.mli blahcaml.ml
-
-install: META $(TARGETS)
-	ocamlfind remove blahcaml
-	ocamlfind install blahcaml $+
-
 clean:
 	rm -f *.cm* *.a *.o
 
-cleanall: clean
-	rm -rf ../apidoc
+targets:
+	@echo $(TARGETS)
 

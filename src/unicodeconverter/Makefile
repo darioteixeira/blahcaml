@@ -1,17 +1,24 @@
+#
+# Configuration options.
+#
+
+CPP_OPS=-Werror -O2
+
 SRCS=$(shell ls *.cpp)
 OBJS=$(foreach SRC, $(SRCS), $(basename $(SRC)).o)
 
-all: $(OBJS)
+
+#
+# Rules.
+#
+
+all: lib
+
+lib: $(OBJS)
 
 %.o: %.cpp
-	g++ -O2 -c $< -o $@
-
-doc:
-
-install:
+	g++ $(CPP_OPS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
-
-cleanall: clean
 
