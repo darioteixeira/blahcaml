@@ -1,8 +1,8 @@
 .PHONY: all
 
 .DEFAULT all:
-	make $(MAKECMDGOALS) -C mathml2dtd
-	make $(MAKECMDGOALS) -C blahtexcore
-	make $(MAKECMDGOALS) -C unicodeconverter
-	make $(MAKECMDGOALS) -C blahcaml
+	make $(MAKECMDGOALS) -C src/mathml2dtd
+	make $(MAKECMDGOALS) -C src/blahtexcore
+	make $(MAKECMDGOALS) -C src/unicodeconverter
+	make $(MAKECMDGOALS) -C src/blahcaml
 

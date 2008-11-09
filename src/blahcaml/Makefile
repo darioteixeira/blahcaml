@@ -14,7 +14,6 @@ CONV_DIR=../unicodeconverter
 CONV_OBJS=$(shell ls $(CONV_DIR)/*.o)
 
 PICKLE_DIR=../mathml2dtd
-PICKLE_OBJS=$(shell ls $(PICKLE_DIR)/*.o)
 
 TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a
 
@@ -25,8 +24,12 @@ TARGETS=blahcaml.cmi blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a
 
 all: $(TARGETS)
 
-blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a: $(BLAH_OBJS) $(CONV_OBJS) $(PICKLE_OBJS) libmathml2dtd_stubs.o libblahtex_stubs.o blahcaml.ml
-	ocamlmklib -verbose -ocamlc 'ocamlfind ocamlc -package pxp' -ocamlopt 'ocamlfind ocamlopt -package pxp' -o blahcaml -custom $+ -cclib -lstdc++
+$(TARGETS): $(BLAH_OBJS) $(CONV_OBJS) libblahtex_stubs.o blahcaml.ml
+	ocamlmklib \
+		-verbose \
+		-ocamlc 'ocamlfind ocamlc -I $(PICKLE_DIR) -package pxp' \
+		-ocamlopt 'ocamlfind ocamlopt -I $(PICKLE_DIR) -package pxp' \
+		-o blahcaml -custom $+ -cclib -lstdc++
 
 libblahtex_stubs.o: libblahtex_stubs.c
 	g++ $(CPP_OPS) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(CONV_DIR) -c $<
