@@ -1,7 +1,16 @@
-name="Blahcaml"
-version="0.1"
-description="Ocaml bindings to Blahtex"
-requires="pxp"
+name = "Blahcaml"
+version = "1.1"
+description = "Ocaml bindings to Blahtex"
+requires = "blahcaml.mathml2dtd, pxp"
 archive(byte) = "blahcaml.cma"
 archive(native) = "blahcaml.cmxa"
+
+package "mathml2dtd"
+	{
+	name = "MathML2DTD"
+	version = "1.1"
+	description = "Library with embedded MathML2 DTD"
+	archive(byte) = "mathml2dtd.cma"
+	archive(native) = "mathml2dtd.cmxa"
+	}
 
