@@ -33,7 +33,9 @@ lib:
 	make lib -C $(UNICODECONVERTER_DIR)
 	make lib -C $(BLAHCAML_DIR)
 
-apidoc:
+apidoc: lib
+	mkdir -p doc/apidoc
+	make apidoc -C $(BLAHCAML_DIR)
 
 install: lib
 	ocamlfind install $(PKG_NAME) $(META_FILE) $(FQTARGETS)
@@ -52,5 +54,5 @@ clean:
 	make clean -C $(BLAHCAML_DIR)
 
 dist: clean
-	rm -rf apidoc
+	rm -rf doc/apidoc
 
