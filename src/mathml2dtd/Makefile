@@ -8,7 +8,7 @@ PICKLE_SRCS=$(wildcard $(MATHML2DTD_DIR)/mathml2.dtd $(MATHML2DTD_DIR)/mathml2-q
 
 PICKLE_OBJS=$(foreach SRC, $(PICKLE_SRCS), $(notdir $(SRC)).ro.o)
 
-TARGETS=mathml2dtd.cmi mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.a libmathml2dtd.a
+TARGETS=mathml2dtd.cmi mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.cmxs mathml2dtd.a libmathml2dtd.a dllmathml2dtd.so
 
 #
 # Rules
@@ -18,11 +18,14 @@ all: lib
 
 lib: $(TARGETS)
 
-$(TARGETS): $(PICKLE_OBJS) libmathml2dtd_stubs.o mathml2dtd.ml
-	ocamlmklib -verbose -o mathml2dtd -custom $+
+mathml2dtd.cmxs: mathml2dtd.cmxa
+	ocamlopt -shared -linkall -I `pwd` -o $@ $<
 
-libmathml2dtd_stubs.o: libmathml2dtd_stubs.c
-	ocamlc -c $<
+mathml2dtd.cmi mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.a libmathml2dtd.a dllmathml2dtd.so: $(PICKLE_OBJS) mathml2dtd_stubs.o mathml2dtd.ml
+	ocamlmklib -verbose -o mathml2dtd -oc mathml2dtd $+
+
+mathml2dtd_stubs.o: mathml2dtd_stubs.c
+	ocamlc -verbose -ccopt -std=c99 -c $<
 
 %.ro.o: %.rw.o
 	objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
@@ -31,7 +34,7 @@ libmathml2dtd_stubs.o: libmathml2dtd_stubs.c
 	cd $(MATHML2DTD_DIR) && ld -r -b binary -o ../$@ $(basename $(basename $@))
 
 clean:
-	rm -f *.o *.a *.cm*
+	rm -f *.o *.a *.cm* *.so
 
 targets:
 	@echo $(TARGETS)

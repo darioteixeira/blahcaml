@@ -4,6 +4,7 @@ description = "Ocaml bindings to Blahtex"
 requires = "blahcaml.mathml2dtd, pxp"
 archive(byte) = "blahcaml.cma"
 archive(native) = "blahcaml.cmxa"
+archive(plugin,native) = "blahcaml.cmxs"
 
 package "mathml2dtd"
 	(
@@ -12,5 +13,6 @@ package "mathml2dtd"
 	description = "Library with embedded MathML2 DTD"
 	archive(byte) = "mathml2dtd.cma"
 	archive(native) = "mathml2dtd.cmxa"
+	archive(plugin,native) = "mathml2dtd.cmxs"
 	)
 
