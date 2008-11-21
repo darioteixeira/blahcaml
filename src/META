@@ -1,18 +1,20 @@
 name = "Blahcaml"
-version = "1.1"
+version = "1.2"
 description = "Ocaml bindings to Blahtex"
 requires = "blahcaml.mathml2dtd, pxp"
 archive(byte) = "blahcaml.cma"
 archive(native) = "blahcaml.cmxa"
+archive(plugin,byte) = "blahcaml.cma"
 archive(plugin,native) = "blahcaml.cmxs"
 
 package "mathml2dtd"
 	(
 	name = "MathML2DTD"
-	version = "1.1"
+	version = "1.2"
 	description = "Library with embedded MathML2 DTD"
 	archive(byte) = "mathml2dtd.cma"
 	archive(native) = "mathml2dtd.cmxa"
+	archive(plugin,byte) = "mathml2dtd.cma"
 	archive(plugin,native) = "mathml2dtd.cmxs"
 	)
 

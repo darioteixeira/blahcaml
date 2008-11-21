@@ -2,9 +2,10 @@
 # Configuration options
 #
 
-CCOPT="-O2 -fno-defer-pop -D_FILE_OFFSET_BITS=64 -D_REENTRANT -fPIC"
+CCOPT=-O2 -fno-defer-pop -D_FILE_OFFSET_BITS=64 -D_REENTRANT -fPIC
 
-OCAML_STDLIB=$(shell ocamlfind printconf stdlib)
+OCAML_STDLIB=$(shell ocamlc -where)
+OCAML_ROOT=$(abspath $(OCAML_STDLIB)/../../)
 
 BLAH_DIR=../blahtexcore
 BLAH_OBJS=$(shell ls $(BLAH_DIR)/*.o)
@@ -25,11 +26,21 @@ all: lib
 
 lib: $(TARGETS)
 
+dllblahcaml.so: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o
+	gcc -shared -lstdc++ -L$(OCAML_ROOT) -Wl,-rpath,$(OCAML_ROOT) -o $@ $+
+
+libblahcaml.a: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o
+	ar rc $@ $+
+	ranlib $@
+
+blahcaml.cma: blahcaml.cmo libblahcaml.a dllblahcaml.so
+	ocamlc -a -o $@ $< -dllib -lblahcaml -cclib -lblahcaml -cclib -lstdc++ -ccopt -L$(OCAML_ROOT) -ccopt -Wl,-rpath,$(OCAML_ROOT)
+
+blahcaml.cmxa: blahcaml.cmx libblahcaml.a dllblahcaml.so
+	ocamlopt -a -o $@ $< -cclib -lblahcaml -cclib -lstdc++ -ccopt -L$(OCAML_ROOT) -ccopt -Wl,-rpath,$(OCAML_ROOT)
+
 blahcaml.cmxs: blahcaml.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
-
-blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a dllblahcaml.so: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o blahcaml.cmo blahcaml.cmx
-	ocamlmklib -verbose -o blahcaml -oc blahcaml -cclib -lstdc++ $+
 
 blahcaml.cmi: blahcaml.mli
 	ocamlfind ocamlc -package pxp -I $(MATHML2DTD) -o $@ -c $<
@@ -40,8 +51,8 @@ blahcaml.cmo: blahcaml.ml
 blahcaml.cmx: blahcaml.ml
 	ocamlfind ocamlopt -package pxp -I $(MATHML2DTD) -o $@ -c $<
 
-blahtex_stubs.o: blahtex_stubs.c
-	ocamlc -cc g++ -ccopt $(CCOPT) -I $(BLAH_DIR) -I $(CONV_DIR) -o $@ -c $<
+blahtex_stubs.o: blahtex_stubs.cpp
+	g++ $(CCOPT) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(CONV_DIR) -o $@ -c $<
 
 apidoc:
 	ocamlfind ocamldoc -I $(MATHML2DTD) -package pxp -v -html -d ../../doc/apidoc blahcaml.mli blahcaml.ml
