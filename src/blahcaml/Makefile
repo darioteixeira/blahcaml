@@ -5,7 +5,6 @@
 CCOPT=-O2 -fno-defer-pop -D_FILE_OFFSET_BITS=64 -D_REENTRANT -fPIC
 
 OCAML_STDLIB=$(shell ocamlc -where)
-OCAML_ROOT=$(abspath $(OCAML_STDLIB)/../../)
 
 BLAH_DIR=../blahtexcore
 BLAH_OBJS=$(shell ls $(BLAH_DIR)/*.o)
@@ -26,18 +25,8 @@ all: lib
 
 lib: $(TARGETS)
 
-dllblahcaml.so: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o
-	gcc -shared -lstdc++ -L$(OCAML_ROOT) -Wl,-rpath,$(OCAML_ROOT) -o $@ $+
-
-libblahcaml.a: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o
-	ar rc $@ $+
-	ranlib $@
-
-blahcaml.cma: blahcaml.cmo libblahcaml.a dllblahcaml.so
-	ocamlc -a -o $@ $< -dllib -lblahcaml -cclib -lblahcaml -cclib -lstdc++ -ccopt -L$(OCAML_ROOT) -ccopt -Wl,-rpath,$(OCAML_ROOT)
-
-blahcaml.cmxa: blahcaml.cmx libblahcaml.a dllblahcaml.so
-	ocamlopt -a -o $@ $< -cclib -lblahcaml -cclib -lstdc++ -ccopt -L$(OCAML_ROOT) -ccopt -Wl,-rpath,$(OCAML_ROOT)
+blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a dllblahcaml.so: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o blahcaml.cmo blahcaml.cmx
+	ocamlmklib -verbose -lstdc++ -o blahcaml -oc blahcaml $+
 
 blahcaml.cmxs: blahcaml.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
