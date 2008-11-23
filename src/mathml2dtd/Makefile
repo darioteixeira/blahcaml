@@ -21,8 +21,17 @@ lib: $(TARGETS)
 mathml2dtd.cmxs: mathml2dtd.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
 
-mathml2dtd.cmi mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.a libmathml2dtd.a dllmathml2dtd.so: $(PICKLE_OBJS) mathml2dtd_stubs.o mathml2dtd.ml
+mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.a libmathml2dtd.a dllmathml2dtd.so: $(PICKLE_OBJS) mathml2dtd_stubs.o mathml2dtd.cmo mathml2dtd.cmx
 	ocamlmklib -verbose -o mathml2dtd -oc mathml2dtd $+
+
+mathml2dtd.cmi: mathml2dtd.mli
+	ocamlfind ocamlc -package pxp -o $@ -c $<
+
+mathml2dtd.cmo: mathml2dtd.ml
+	ocamlfind ocamlc -package pxp -o $@ -c $<
+
+mathml2dtd.cmx: mathml2dtd.ml
+	ocamlfind ocamlopt -package pxp -o $@ -c $<
 
 mathml2dtd_stubs.o: mathml2dtd_stubs.c
 	ocamlc -verbose -ccopt -std=c99 -c $<
