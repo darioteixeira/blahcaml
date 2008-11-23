@@ -56,6 +56,10 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 		const char* c_explanation = s_explanation.c_str ();
 		caml_raise_with_string (*caml_named_value ("blahtex_error"), c_explanation);
 		}
+	catch (UnicodeConverter::Exception exc)
+		{
+		caml_raise_constant (*caml_named_value ("unicode_converter_error"));
+		}
 	
 	const char* res = sres.c_str ();
 	ml_res = caml_copy_string (res);

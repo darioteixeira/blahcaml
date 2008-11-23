@@ -32,9 +32,16 @@ let static_dtd = ref None
 (*	{2 Public types and functions}						*)
 (********************************************************************************)
 
-(**	Exception raised when there's an error.
+(**	Exception raised when the Blahtex core routines encounter an error parsing
+	the provided string.
 *)
 exception Blahtex_error of string
+
+
+(**	Exception raised when an error occurs during the to/from UTF8 conversion.
+	(if the string containing the TeX equation is not valid UTF8, for example).
+*)
+exception Unicode_converter_error
 
 
 (**	Initialises the MathML2DTD.  This must be done before any of the "safe"
@@ -93,5 +100,7 @@ let safe_mathml_from_tex tex_str =
 (*	{2 Module initialisation}						*)
 (********************************************************************************)
 
-let () = Callback.register_exception "blahtex_error" (Blahtex_error "")
+let () =
+	Callback.register_exception "blahtex_error" (Blahtex_error "");
+	Callback.register_exception "unicode_converter_error" Unicode_converter_error
 
