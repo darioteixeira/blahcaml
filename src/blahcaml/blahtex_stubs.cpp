@@ -38,16 +38,19 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 	UnicodeConverter iconv;
 	iconv.Open ();
 
-	char *tex = String_val (v_tex);
-	string stex (tex);
-	string sres;
-
 	try	{
+		char *tex = String_val (v_tex);
+		string stex (tex);
+
 		wstring wtex = iconv.ConvertIn (stex);
 		blahtex::Interface blah;
 		blah.ProcessInput (wtex);
 		wstring wres = blah.GetMathml ();
-		sres = iconv.ConvertOut (wres);
+		string sres = "<math>" + iconv.ConvertOut (wres) + "</math>";
+
+		const char* res = sres.c_str ();
+		ml_res = caml_copy_string (res);
+		CAMLreturn (ml_res);
 		}
 	catch (blahtex::Exception exc)
 		{
@@ -60,9 +63,5 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 		{
 		caml_raise_constant (*caml_named_value ("unicode_converter_error"));
 		}
-	
-	const char* res = sres.c_str ();
-	ml_res = caml_copy_string (res);
-	CAMLreturn (ml_res);
 	}
 
