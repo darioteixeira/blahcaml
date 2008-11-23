@@ -9,8 +9,11 @@ OCAML_STDLIB=$(shell ocamlc -where)
 BLAH_DIR=../blahtexcore
 BLAH_OBJS=$(shell ls $(BLAH_DIR)/*.o)
 
-CONV_DIR=../unicodeconverter
-CONV_OBJS=$(shell ls $(CONV_DIR)/*.o)
+UCONV_DIR=../unicodeconverter
+UCONV_OBJS=$(shell ls $(UCONV_DIR)/*.o)
+
+MSG_DIR=../messages
+MSG_OBJS=$(shell ls $(MSG_DIR)/*.o)
 
 MATHML2DTD=../mathml2dtd
 
@@ -25,7 +28,7 @@ all: lib
 
 lib: $(TARGETS)
 
-blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a dllblahcaml.so: $(BLAH_OBJS) $(CONV_OBJS) blahtex_stubs.o blahcaml.cmo blahcaml.cmx
+blahcaml.cma blahcaml.cmxa blahcaml.a libblahcaml.a dllblahcaml.so: $(BLAH_OBJS) $(UCONV_OBJS) $(MSG_OBJS) blahtex_stubs.o blahcaml.cmo blahcaml.cmx
 	ocamlmklib -verbose -lstdc++ -o blahcaml -oc blahcaml $+
 
 blahcaml.cmxs: blahcaml.cmxa
@@ -41,7 +44,7 @@ blahcaml.cmx: blahcaml.ml
 	ocamlfind ocamlopt -package pxp -I $(MATHML2DTD) -o $@ -c $<
 
 blahtex_stubs.o: blahtex_stubs.cpp
-	g++ $(CCOPT) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(CONV_DIR) -o $@ -c $<
+	g++ $(CCOPT) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(UCONV_DIR) -I $(MSG_DIR) -o $@ -c $<
 
 apidoc:
 	ocamlfind ocamldoc -I $(MATHML2DTD) -package pxp -v -html -d ../../doc/apidoc blahcaml.mli blahcaml.ml

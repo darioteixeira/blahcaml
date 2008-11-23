@@ -1,5 +1,5 @@
 /********************************************************************************/
-/*	Stubs for libblahtex.
+/*	Stubs for Blahtex.
 
 	Copyright (c) 2008 Dario Teixeira (dario.teixeira@yahoo.com)
 
@@ -10,22 +10,24 @@
 
 #include "Interface.h"
 #include "UnicodeConverter.h"
+#include "Messages.h"
 
 extern "C"
 	{
 	#include <caml/mlvalues.h>
 	#include <caml/memory.h>
 	#include <caml/alloc.h>
+	#include <caml/callback.h>
+	#include <caml/fail.h>
 	}
+
+using namespace std;
 
 
 /********************************************************************************/
 /* The unsafe_mathml_from_tex stub function.  It interfaces between the Ocaml	*/
 /* side and the C++ functions that actually do all the work.			*/
 /********************************************************************************/
-
-#include <iostream>
-#include <iomanip>
 
 extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 
@@ -37,19 +39,22 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 	iconv.Open ();
 
 	char *tex = String_val (v_tex);
-	std::string stex (tex);
-	std::string sres;
+	string stex (tex);
+	string sres;
 
 	try	{
-		std::wstring wtex = iconv.ConvertIn (stex);
+		wstring wtex = iconv.ConvertIn (stex);
 		blahtex::Interface blah;
 		blah.ProcessInput (wtex);
-		std::wstring wres = blah.GetMathml ();
+		wstring wres = blah.GetMathml ();
 		sres = iconv.ConvertOut (wres);
 		}
 	catch (blahtex::Exception exc)
 		{
-		std::cout << "Exception!" << std::endl;
+		wstring w_explanation = GetErrorMessage (exc);
+		string s_explanation = iconv.ConvertOut (w_explanation);
+		const char* c_explanation = s_explanation.c_str ();
+		caml_raise_with_string (*caml_named_value ("blahtex_error"), c_explanation);
 		}
 	
 	const char* res = sres.c_str ();

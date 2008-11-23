@@ -29,8 +29,13 @@ let static_dtd = ref None
 
 
 (********************************************************************************)
-(*	{2 Public functions}							*)
+(*	{2 Public types and functions}						*)
 (********************************************************************************)
+
+(**	Exception raised when there's an error.
+*)
+exception Blahtex_error of string
+
 
 (**	Initialises the MathML2DTD.  This must be done before any of the "safe"
 	functions are invoked.  Note that this function is automatically called
@@ -60,7 +65,7 @@ let sanitize_mathml unsafe_mathml =
 		| None		-> init_dtd (); get_dtd () in
 	let dtd = get_dtd () in
 	let config = {default_config with encoding = `Enc_utf8} in
-	let _ = Pxp_yacc.parse_content_entity config (from_string unsafe_mathml) dtd default_spec
+	let _ = parse_content_entity config (from_string unsafe_mathml) dtd default_spec
 	in unsafe_mathml
 
 
@@ -82,4 +87,11 @@ external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 let safe_mathml_from_tex tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex tex_str
 	in sanitize_mathml unsafe_mathml
+
+
+(********************************************************************************)
+(*	{2 Module initialisation}						*)
+(********************************************************************************)
+
+let () = Callback.register_exception "blahtex_error" (Blahtex_error "")
 
