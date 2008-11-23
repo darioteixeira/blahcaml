@@ -32,7 +32,7 @@ let static_dtd = ref None
 exception Blahtex_error of string
 
 
-(**	Exception raised when an error occurs during the to/from UTF8 conversion.
+(**	Exception raised when an error occurs during the conversion to/from UTF8
 	(if the string containing the TeX equation is not valid UTF8, for example).
 *)
 exception Unicode_converter_error
