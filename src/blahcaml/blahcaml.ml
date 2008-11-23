@@ -23,71 +23,25 @@ open Pxp_yacc
 (*	{2 Privates types and functions}					*)
 (********************************************************************************)
 
-(**	Mapping between DTD PUBLIC identifiers and the pickle.
-*)
-let catalog =
-	[
-	(Public ("-//W3C//ENTITIES MathML 2.0 Qualified Names 1.0//EN", ""), Mathml2dtd.get_mathml2_qname_1_mod ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Arrow Relations for MathML 2.0//EN", ""), Mathml2dtd.get_isoamsa_ent ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Binary Operators for MathML 2.0//EN", ""), Mathml2dtd.get_isoamsb_ent ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Delimiters for MathML 2.0//EN", ""), Mathml2dtd.get_isoamsc_ent ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Negated Relations for MathML 2.0//EN", ""), Mathml2dtd.get_isoamsn_ent ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Ordinary for MathML 2.0//EN", ""), Mathml2dtd.get_isoamso_ent ());
-	(Public ("-//W3C//ENTITIES Added Math Symbols: Relations for MathML 2.0//EN", ""), Mathml2dtd.get_isoamsr_ent ());
-	(Public ("-//W3C//ENTITIES Greek Symbols for MathML 2.0//EN", ""), Mathml2dtd.get_isogrk3_ent ());
-	(Public ("-//W3C//ENTITIES Math Alphabets: Fraktur for MathML 2.0//EN", ""), Mathml2dtd.get_isomfrk_ent ());
-	(Public ("-//W3C//ENTITIES Math Alphabets: Open Face for MathML 2.0//EN", ""), Mathml2dtd.get_isomopf_ent ());
-	(Public ("-//W3C//ENTITIES Math Alphabets: Script for MathML 2.0//EN", ""), Mathml2dtd.get_isomscr_ent ());
-	(Public ("-//W3C//ENTITIES General Technical for MathML 2.0//EN", ""), Mathml2dtd.get_isotech_ent ());
-	(Public ("-//W3C//ENTITIES Box and Line Drawing for MathML 2.0//EN", ""), Mathml2dtd.get_isobox_ent ());
-	(Public ("-//W3C//ENTITIES Russian Cyrillic for MathML 2.0//EN", ""), Mathml2dtd.get_isocyr1_ent ());
-	(Public ("-//W3C//ENTITIES Non-Russian Cyrillic for MathML 2.0//EN", ""), Mathml2dtd.get_isocyr2_ent ());
-	(Public ("-//W3C//ENTITIES Diacritical Marks for MathML 2.0//EN", ""), Mathml2dtd.get_isodia_ent ());
-	(Public ("-//W3C//ENTITIES Added Latin 1 for MathML 2.0//EN", ""), Mathml2dtd.get_isolat1_ent ());
-	(Public ("-//W3C//ENTITIES Added Latin 2 for MathML 2.0//EN", ""), Mathml2dtd.get_isolat2_ent ());
-	(Public ("-//W3C//ENTITIES Numeric and Special Graphic for MathML 2.0//EN", ""), Mathml2dtd.get_isonum_ent ());
-	(Public ("-//W3C//ENTITIES Publishing for MathML 2.0//EN", ""), Mathml2dtd.get_isopub_ent ());
-	(Public ("-//W3C//ENTITIES Extra for MathML 2.0//EN", ""), Mathml2dtd.get_mmlextra_ent ());
-	(Public ("-//W3C//ENTITIES Aiases for MathML 2.0//EN", ""), Mathml2dtd.get_mmlalias_ent ());
-	]
-
-
 (**	The parsed DTD.  If [None], the DTD has not been parsed yet.
 *)
 let static_dtd = ref None
-
-
-(**	The default configuration for parsing DTD and XML.
-*)
-let config =
-	{
-	default_config with
-	encoding = `Enc_utf8
-	}
 
 
 (********************************************************************************)
 (*	{2 Public functions}							*)
 (********************************************************************************)
 
-(**	Initialisation of the MathML2 DTD.  This function can take several seconds
-	to complete, but only needs to be called once.  If you don't worry about
-	safety and only invoke {!unsafe_mathml_from_tex}, then you never need to
-	run this function.  On the other hand, if you call {!sanitize_mathml} or
-	{!safe_mathml_from_tex}, and the DTD has never been manually initialised,
-	then this function will automatically be invoked.  Therefore, if you want
-	predictability on the runtime performance of the sanitisation functions,
-	you should invoke it during the initialisation stage of your programme.
+(**	Initialises the MathML2DTD.  This must be done before any of the "safe"
+	functions are invoked.  Note that this function is automatically called
+	if the DTD has never been initialised and you invoke one of the "safe"
+	functions, [sanitize_mathml] or [safe_mathml_from_tex].  Because the
+	initialisation can take several seconds to complete, if you want
+	predictability on the runtime performance of your application, you
+	should invoke this function upon initialisation of your programme.
 *)
 let init_dtd () =
-	try
-		let resolver = new Pxp_reader.lookup_id_as_string catalog in
-		let dtd = parse_dtd_entity config (from_string ~alt:[resolver] (Mathml2dtd.get_mathml2_dtd ()))
-		in static_dtd := Some dtd
-	with
-		exc ->
-			print_endline (Pxp_types.string_of_exn exc);
-			failwith "Internal error during parsing of built-in MathML2 DTD"
+	static_dtd := Some (Mathml2dtd.get_dtd ())
 
 
 (**	Given a string containing potentially unsafe MathML, this function makes
@@ -95,13 +49,17 @@ let init_dtd () =
 	the original string.  If, however, the string does not conform to the DTD,
 	an exception is raised.  See the {{:http://projects.camlcity.org/projects/pxp.html}PXP
 	documentation} for the meaning of these exceptions.  Note that if the DTD
-	has never been initialised, this function will automatically invoke {!init_dtd}.
+	has never been initialised, this function will automatically do so upon
+	its first invocation.  This operation can take several seconds to complete;
+	therefore if you want predictability on the runtime performance of your
+	application, invoke [init_dtd] upon initialisation of your programme.
 *)
 let sanitize_mathml unsafe_mathml =
 	let rec get_dtd () = match !static_dtd with
 		| Some dtd	-> dtd
 		| None		-> init_dtd (); get_dtd () in
 	let dtd = get_dtd () in
+	let config = {default_config with encoding = `Enc_utf8} in
 	let _ = Pxp_yacc.parse_content_entity config (from_string unsafe_mathml) dtd default_spec
 	in unsafe_mathml
 

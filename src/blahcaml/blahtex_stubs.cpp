@@ -24,6 +24,9 @@ extern "C"
 /* side and the C++ functions that actually do all the work.			*/
 /********************************************************************************/
 
+#include <iostream>
+#include <iomanip>
+
 extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 
 	{
@@ -35,15 +38,21 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 
 	char *tex = String_val (v_tex);
 	std::string stex (tex);
-	std::wstring wtex = iconv.ConvertIn (stex);
+	std::string sres;
 
-	blahtex::Interface blah;
-	blah.ProcessInput (wtex);
-	std::wstring wres = blah.GetMathml ();
-
-	std::string sres = iconv.ConvertOut (wres);
-	const char* res = sres.c_str ();
+	try	{
+		std::wstring wtex = iconv.ConvertIn (stex);
+		blahtex::Interface blah;
+		blah.ProcessInput (wtex);
+		std::wstring wres = blah.GetMathml ();
+		sres = iconv.ConvertOut (wres);
+		}
+	catch (blahtex::Exception exc)
+		{
+		std::cout << "Exception!" << std::endl;
+		}
 	
+	const char* res = sres.c_str ();
 	ml_res = caml_copy_string (res);
 	CAMLreturn (ml_res);
 	}
