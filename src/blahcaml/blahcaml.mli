@@ -20,7 +20,7 @@
 (********************************************************************************)
 
 exception Blahtex_error of string
-exception Unicode_converter_error
+exception Unicode_error
 
 
 (********************************************************************************)

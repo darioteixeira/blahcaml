@@ -61,7 +61,7 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 		}
 	catch (UnicodeConverter::Exception exc)
 		{
-		caml_raise_constant (*caml_named_value ("unicode_converter_error"));
+		caml_raise_constant (*caml_named_value ("unicode_error"));
 		}
 	}
 

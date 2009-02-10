@@ -8,7 +8,7 @@
 *)
 (********************************************************************************)
 
-open Pxp_core_types
+open Pxp_types
 open Pxp_document
 open Pxp_yacc
 
@@ -35,7 +35,7 @@ exception Blahtex_error of string
 (**	Exception raised when an error occurs during the conversion to/from UTF8
 	(if the string containing the TeX equation is not valid UTF8, for example).
 *)
-exception Unicode_converter_error
+exception Unicode_error
 
 
 (********************************************************************************)
@@ -105,5 +105,5 @@ let safe_mathml_from_tex tex_str =
 
 let () =
 	Callback.register_exception "blahtex_error" (Blahtex_error "");
-	Callback.register_exception "unicode_converter_error" Unicode_converter_error
+	Callback.register_exception "unicode_error" Unicode_error
 
