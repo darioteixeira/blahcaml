@@ -25,13 +25,13 @@ mathml2dtd.cma mathml2dtd.cmxa mathml2dtd.a libmathml2dtd.a dllmathml2dtd.so: $(
 	ocamlmklib -verbose -o mathml2dtd -oc mathml2dtd $+
 
 mathml2dtd.cmi: mathml2dtd.mli
-	ocamlfind ocamlc -package pxp -o $@ -c $<
+	ocamlfind ocamlc -package pxp-engine,pxp-ulex-utf8 -o $@ -c $<
 
 mathml2dtd.cmo: mathml2dtd.ml
-	ocamlfind ocamlc -package pxp -o $@ -c $<
+	ocamlfind ocamlc -package pxp-engine,pxp-ulex-utf8 -o $@ -c $<
 
 mathml2dtd.cmx: mathml2dtd.ml
-	ocamlfind ocamlopt -package pxp -o $@ -c $<
+	ocamlfind ocamlopt -package pxp-engine,pxp-ulex-utf8 -o $@ -c $<
 
 mathml2dtd_stubs.o: mathml2dtd_stubs.c
 	ocamlc -verbose -ccopt -std=c99 -c $<

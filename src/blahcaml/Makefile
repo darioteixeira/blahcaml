@@ -35,19 +35,19 @@ blahcaml.cmxs: blahcaml.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
 
 blahcaml.cmi: blahcaml.mli
-	ocamlfind ocamlc -package pxp -I $(MATHML2DTD) -o $@ -c $<
+	ocamlfind ocamlc -package pxp-engine,pxp-ulex-utf8 -I $(MATHML2DTD) -o $@ -c $<
 
 blahcaml.cmo: blahcaml.ml
-	ocamlfind ocamlc -package pxp -I $(MATHML2DTD) -o $@ -c $<
+	ocamlfind ocamlc -package pxp-engine,pxp-ulex-utf8 -I $(MATHML2DTD) -o $@ -c $<
 
 blahcaml.cmx: blahcaml.ml
-	ocamlfind ocamlopt -package pxp -I $(MATHML2DTD) -o $@ -c $<
+	ocamlfind ocamlopt -package pxp-engine,pxp-ulex-utf8 -I $(MATHML2DTD) -o $@ -c $<
 
 blahtex_stubs.o: blahtex_stubs.cpp
 	g++ $(CCOPT) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(UCONV_DIR) -I $(MSG_DIR) -o $@ -c $<
 
 apidoc:
-	ocamlfind ocamldoc -I $(MATHML2DTD) -package pxp -v -html -d ../../doc/apidoc blahcaml.mli blahcaml.ml
+	ocamlfind ocamldoc -I $(MATHML2DTD) -package pxp-engine,pxp-ulex-utf8 -v -html -d ../../doc/apidoc blahcaml.mli blahcaml.ml
 
 clean:
 	rm -f *.cm* *.a *.o *.so
