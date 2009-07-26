@@ -1,17 +1,19 @@
-all: test.byte test.native
+NAME=test
 
-test.byte: test.cmo
+all: $(NAME).byte $(NAME).native
+
+$(NAME).byte: $(NAME).cmo
 	ocamlfind ocamlc -package blahcaml -linkpkg -o $@ $<
 
-test.native: test.cmx
+$(NAME).native: $(NAME).cmx
 	ocamlfind ocamlopt -package blahcaml -linkpkg -o $@ $<
 
-test.cmo: test.ml
+$(NAME).cmo: $(NAME).ml
 	ocamlfind ocamlc -package blahcaml -c $<
 
-test.cmx: test.ml
+$(NAME).cmx: $(NAME).ml
 	ocamlfind ocamlopt -package blahcaml -c $<
 
 clean:
-	rm -f *.cm[iox] test.o test.byte test.native
+	rm -f *.cm[iox] $(NAME).o $(NAME).byte $(NAME).native
 
