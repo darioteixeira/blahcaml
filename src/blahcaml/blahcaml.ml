@@ -1,8 +1,6 @@
 (********************************************************************************)
-(*	Implementation file for the Blahcaml library.
-
-	Copyright (c) 2008 Dario Teixeira (dario.teixeira@yahoo.com)
-
+(*	Blahcaml.ml
+	Copyright (c) 2008-2009 Dario Teixeira (dario.teixeira@yahoo.com)
 	This software is distributed under the terms of the GNU GPL version 2.
 	See LICENSE file for full license text.
 *)
@@ -10,7 +8,6 @@
 
 open Pxp_types
 open Pxp_document
-open Pxp_yacc
 
 
 (********************************************************************************)
@@ -79,7 +76,7 @@ let sanitize_mathml unsafe_mathml =
 	the result conforms to the MathML2 DTD!  If that assurance is required
 	please use the {!safe_mathml_from_tex}.  If the Blahtex core routines
 	detect an error in the TeX equation, an exception of either {!Blahtex_error}
-	or {!Unicode_converter_error} will be raised.
+	or {!Unicode_error} will be raised.
 *)
 external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 
@@ -90,9 +87,9 @@ external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 	is raised.  See the {{:http://projects.camlcity.org/projects/pxp.html}PXP
         documentation} for the meaning of these exceptions.  Also, if the Blahtex
 	core routines detect an error in the TeX equation, an exception of either
-	{!Blahtex_error} or {!Unicode_converter_error} will be raised.  Note that
-	if the DTD has never been initialised, this function will automatically do
-	so upon its first invocation (see {!init_dtd} for more information).
+	{!Blahtex_error} or {!Unicode_error} will be raised.  Note that if the DTD
+	has never been initialised, this function will automatically do so upon its
+	first invocation (see {!init_dtd} for more information).
 *)
 let safe_mathml_from_tex tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex tex_str
