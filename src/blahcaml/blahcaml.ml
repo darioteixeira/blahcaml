@@ -7,8 +7,7 @@
 (********************************************************************************)
 
 open Pxp_types
-open Pxp_document
-
+open Pxp_tree_parser
 
 (********************************************************************************)
 (**	{2 Privates types and functions}					*)
@@ -67,7 +66,8 @@ let sanitize_mathml unsafe_mathml =
 		| None		-> init_dtd (); get_dtd () in
 	let dtd = get_dtd () in
 	let config = {default_config with encoding = `Enc_utf8} in
-	let _ = parse_content_entity config (from_string unsafe_mathml) dtd default_spec
+	let source = Pxp_types.from_string unsafe_mathml in
+	let _ = Pxp_tree_parser.parse_content_entity config source dtd default_spec
 	in unsafe_mathml
 
 
