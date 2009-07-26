@@ -37,3 +37,6 @@ mathml2dtd.cmx: mathml2dtd.ml mathml2dtd.cmi
 clean:
 	rm -f *.o *.a *.cm*
 
+targets:
+	@echo $(TARGETS)
+
