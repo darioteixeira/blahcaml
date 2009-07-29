@@ -20,7 +20,7 @@ let test_service =
 
 
 let equation =
-	let mathml = Blahcaml.unsafe_mathml_from_tex "x = \\frac{y}{2}" in
+	let mathml = Blahcaml.safe_mathml_from_tex "y = \\frac{y^2}{\\sqrt{y-1}}" in
 	let elem : [> `Div] XHTML.M.elt = XHTML.M.unsafe_data mathml in
 	elem
 
