@@ -23,11 +23,11 @@ using namespace std;
 
 
 /********************************************************************************/
-/* The unsafe_mathml_from_tex stub function.  It interfaces between the Ocaml	*/
+/* The unsafe_mathml_from_tex_stub function.  It interfaces between the	Ocaml	*/
 /* side and the C++ functions that actually do all the work.			*/
 /********************************************************************************/
 
-extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
+extern "C" CAMLprim value unsafe_mathml_from_tex_stub (value v_tex)
 
 	{
 	CAMLparam1 (v_tex);
@@ -44,7 +44,7 @@ extern "C" CAMLprim value unsafe_mathml_from_tex (value v_tex)
 		blahtex::Interface blah;
 		blah.ProcessInput (wtex);
 		wstring wres = blah.GetMathml ();
-		string sres = "<math>" + iconv.ConvertOut (wres) + "</math>";
+		string sres = iconv.ConvertOut (wres);
 
 		const char* res = sres.c_str ();
 		ml_res = caml_copy_string (res);

@@ -18,6 +18,11 @@ open Pxp_tree_parser
 let static_dtd = ref None
 
 
+(**	Interface to the C function that actually does the conversion.
+*)
+external unsafe_mathml_from_tex_stub: string -> string = "unsafe_mathml_from_tex_stub"
+
+
 (********************************************************************************)
 (**	{2 Public exceptions}							*)
 (********************************************************************************)
@@ -78,7 +83,11 @@ let sanitize_mathml unsafe_mathml =
 	detect an error in the TeX equation, an exception of either {!Blahtex_error}
 	or {!Unicode_error} will be raised.
 *)
-external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
+let unsafe_mathml_from_tex ?(add_xmlns = true) tex_str =
+	let start_tag = if add_xmlns then "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">" else "<math>"
+	and end_tag = "</math>"
+	and content = unsafe_mathml_from_tex_stub tex_str
+	in start_tag ^ content ^ end_tag
 
 
 (**	Converts a string containing an equation in TeX format into another string
@@ -91,8 +100,8 @@ external unsafe_mathml_from_tex: string -> string = "unsafe_mathml_from_tex"
 	has never been initialised, this function will automatically do so upon its
 	first invocation (see {!init_dtd} for more information).
 *)
-let safe_mathml_from_tex tex_str =
-	let unsafe_mathml = unsafe_mathml_from_tex tex_str
+let safe_mathml_from_tex ?(add_xmlns = true) tex_str =
+	let unsafe_mathml = unsafe_mathml_from_tex ~add_xmlns tex_str
 	in sanitize_mathml unsafe_mathml
 
 

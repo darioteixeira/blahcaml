@@ -27,6 +27,6 @@ exception Unicode_error
 
 val init_dtd: unit -> unit
 val sanitize_mathml: string -> string
-val unsafe_mathml_from_tex: string -> string
-val safe_mathml_from_tex: string -> string
+val unsafe_mathml_from_tex: ?add_xmlns:bool -> string -> string
+val safe_mathml_from_tex: ?add_xmlns:bool -> string -> string
 
