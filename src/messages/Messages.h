@@ -9,7 +9,7 @@
 /********************************************************************************/
 
 #include <string>
-#include "Misc.h"
+#include "BlahtexCore/Misc.h"
 
 std::wstring GetErrorMessage (const blahtex::Exception& e);
 
