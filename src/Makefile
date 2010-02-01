@@ -4,17 +4,15 @@
 
 PKG_NAME=blahcaml
 
-META_FILE=src/META
+BLAHTEXCORE_DIR=blahtexcore
+UNICODECONVERTER_DIR=unicodeconverter
+MESSAGES_DIR=messages
 
-BLAHTEXCORE_DIR=src/blahtexcore
-UNICODECONVERTER_DIR=src/unicodeconverter
-MESSAGES_DIR=src/messages
-
-MATHML2DTD_DIR=src/mathml2dtd
+MATHML2DTD_DIR=mathml2dtd
 MATHML2DTD_TARGETS=$(shell make targets -s -C $(MATHML2DTD_DIR))
 MATHML2DTD_FQTARGETS=$(foreach TARGET, $(MATHML2DTD_TARGETS), $(MATHML2DTD_DIR)/$(TARGET))
 
-BLAHCAML_DIR=src/blahcaml
+BLAHCAML_DIR=blahcaml
 BLAHCAML_TARGETS=$(shell make targets -s -C $(BLAHCAML_DIR))
 BLAHCAML_FQTARGETS=$(foreach TARGET, $(BLAHCAML_TARGETS), $(BLAHCAML_DIR)/$(TARGET))
 
@@ -39,14 +37,14 @@ apidoc: lib
 	make apidoc -C $(BLAHCAML_DIR)
 
 install: lib
-	ocamlfind install $(PKG_NAME) $(META_FILE) $(FQTARGETS)
+	ocamlfind install $(PKG_NAME) META $(FQTARGETS)
 
 uninstall:
 	ocamlfind remove $(PKG_NAME)
 
 reinstall: lib
 	ocamlfind remove $(PKG_NAME)
-	ocamlfind install $(PKG_NAME) $(META_FILE) $(FQTARGETS)
+	ocamlfind install $(PKG_NAME) META $(FQTARGETS)
 
 clean:
 	make clean -C $(BLAHTEXCORE_DIR)

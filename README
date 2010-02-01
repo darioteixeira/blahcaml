@@ -46,10 +46,10 @@ Blahtex authors.
 4. Building and installing
 ==========================
 
-Typing "make" should suffice to build the Blahtex code and the Blahcaml
-bindings.  Note that the C++ portions require g++.  After building,
-"make install" will perform a findlib installation.  To generate the
-ocamldoc API documentation, use "make apidoc".
+Change into the 'src' directory and issue 'make' to build the Blahtex
+code and the Blahcaml bindings.  Note that the C++ portions require g++.
+After building, 'make install' will perform a findlib installation.
+To generate the ocamldoc API documentation, use 'make apidoc'.
 
 
 5. License
