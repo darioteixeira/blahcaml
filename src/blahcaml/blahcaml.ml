@@ -66,10 +66,12 @@ let init_dtd () =
 (**	Given a string containing potentially unsafe MathML, this function makes sure
 	the it conforms to the MathML2 DTD.  If safe, the function returns the original
 	string.  If, however, the string does not conform to the DTD, a PXP exception
-	is raised.  See the {{:http://projects.camlcity.org/projects/pxp.html}PXP
-	documentation} for the meaning of these exceptions.  Note that if the DTD
-	has never been initialised, this function will automatically do so upon
-	its first invocation (see {!init_dtd} for more information).
+	is raised (please see the {{:http://projects.camlcity.org/projects/pxp.html}PXP
+	documentation} for the meaning of these exceptions).  If the optional boolean
+	parameter [with_xmlns] is true, this function will add the standard MathML
+	namespace to the top-level [math] element. Note that if the DTD has never
+	been initialised, this function will automatically do so upon its first
+	invocation (see {!init_dtd} for more information).
 *)
 let sanitize_mathml ?(with_xmlns = true) unsafe_mathml =
 	let config = {default_config with encoding = `Enc_utf8} in
@@ -99,8 +101,8 @@ let sanitize_mathml ?(with_xmlns = true) unsafe_mathml =
 	the result conforms to the MathML2 DTD!  If that assurance is required
 	please use the {!safe_mathml_from_tex}.  If the optional boolean parameter
 	[with_xmlns] is true, this function will add the standard MathML namespace
-	to the [<math>] element.  Should the Blahtex core routines detect an error
-	in the TeX equation, an exception of either {!Blahtex_error} or
+	to the top-level [math] element.  Should the Blahtex core routines detect
+	an error in the TeX equation, an exception of either {!Blahtex_error} or
 	{!Unicode_error} will be raised.
 *)
 let unsafe_mathml_from_tex ?(with_xmlns = true) tex_str =
@@ -113,10 +115,11 @@ let unsafe_mathml_from_tex ?(with_xmlns = true) tex_str =
 (**	Converts a string containing an equation in TeX format into another string
 	containing the same equation in MathML.  If the optional boolean parameter
         [with_xmlns] is true, this function will add the standard MathML namespace
-        to the [<math>] element.  The resulting string is checked to make sure it
-	conforms to the MathML2 DTD.  If it does not, a PXP exception is raised.
-	See the {{:http://projects.camlcity.org/projects/pxp.html}PXP documentation}
-	for the meaning of these exceptions.  Also, if the Blahtex core routines
+        to the top-level [math] element.  For added security, before being returned
+	the result value of this function is checked to make sure it indeed conforms
+	to the MathML2 DTD.  If it does not, a PXP exception is raised (please consult
+	the {{:http://projects.camlcity.org/projects/pxp.html}PXP documentation} for
+	the meaning of these exceptions).  Also, should the Blahtex core routines
 	detect an error in the TeX equation, an exception of either {!Blahtex_error}
 	or {!Unicode_error} will be raised.  Note that if the DTD has never been
 	initialised, this function will automatically do so upon its first invocation
