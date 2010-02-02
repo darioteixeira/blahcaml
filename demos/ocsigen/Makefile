@@ -1,18 +1,18 @@
-all: main.cma main.cmxs
+all: test.cma test.cmxs
 
-main.cma: main.cmo
+test.cma: test.cmo
 	ocamlc -a -o $@ $<
 
-main.cmxa: main.cmx
+test.cmxa: test.cmx
 	ocamlopt -a -o $@ $<
 
-main.cmxs: main.cmxa
+test.cmxs: test.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
 
-main.cmo: main.ml
+test.cmo: test.ml
 	ocamlfind ocamlc -thread -package lwt,ocsigen,blahcaml -c $<
 
-main.cmx: main.ml
+test.cmx: test.ml
 	ocamlfind ocamlopt -thread -package lwt,ocsigen,blahcaml -c $<
 
 clean:

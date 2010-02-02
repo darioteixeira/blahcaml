@@ -1,5 +1,0 @@
-directory = "."
-requires = "blahcaml"
-archive(plugin,byte) = "main.cma"
-archive(plugin,native) = "main.cmxs"
-
