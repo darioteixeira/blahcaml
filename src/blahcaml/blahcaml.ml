@@ -1,6 +1,6 @@
 (********************************************************************************)
 (*	Blahcaml.ml
-	Copyright (c) 2008-2009 Dario Teixeira (dario.teixeira@yahoo.com)
+	Copyright (c) 2008-2010 Dario Teixeira (dario.teixeira@yahoo.com)
 	This software is distributed under the terms of the GNU GPL version 2.
 	See LICENSE file for full license text.
 *)
@@ -87,7 +87,8 @@ let sanitize_mathml ?(with_xmlns = true) unsafe_mathml =
 			in node#set_attributes (List.filter triager node#attributes)
 		| _ -> () in
 	let () = Pxp_document.iter_tree ~pre:tweaker tree in
-	let () = tree#set_attributes [("xmlns", Value "http://www.w3.org/1998/Math/MathML")] in
+	let atts = if with_xmlns then [("xmlns", Value "http://www.w3.org/1998/Math/MathML")] else [] in
+	let () = tree#set_attributes atts in
 	let buffer = Buffer.create 16 in
 	let () = tree#display (`Out_buffer buffer) `Enc_utf8
 	in Buffer.contents buffer

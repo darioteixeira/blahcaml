@@ -1,46 +1,47 @@
 =========================================================================
-| README for Blahcaml 1.5						|
+| README for Blahcaml 2.0						|
 |									|
 | Dario Teixeira (dario.teixeira@yahoo.com)				|
-| July 2009								|
+| February 2010								|
 =========================================================================
 
 1. Overview
 ===========
 
-Blahcaml provides basic Ocaml bindings to the Blahtex library [1].
-Blahtex is written in C++, and aims at the conversion of TeX equations
-into MathML.  Blahtex was originally designed by David Harvey, but is
-currently maintained by Gilles van Assche.
+Blahcaml provides basic Ocaml bindings to the Blahtex library [1].  Blahtex
+is written in C++, and aims at the conversion of TeX equations into MathML.
+Blahtex was originally designed by David Harvey, but is currently maintained
+by Gilles van Assche.
 
 
 2. Facilities
 =============
 
-Blahcaml is composed of a single homonymous module.  The module contains
-facilities for performing both safe and unsafe conversions from TeX into
-MathML.  Basically, an unsafe conversion simply invokes the underlying
-Blahtex code, while a safe conversion adds a subsequent validation of
-the generated MathML against the official MathML2 DTD [2].
+Blahcaml is composed of two modules: Mathml2dtd and Blahcaml.  The former
+provides low-level access to the MathML2 DTD, and should not be required by
+most users;  The latter module contains facilities for performing both safe
+and unsafe conversions from TeX into MathML.  Basically, an unsafe conversion
+simply invokes the underlying Blahtex code, while a safe conversion adds a
+subsequent validation of the generated MathML against the official MathML2
+DTD [2].
 
 
 3. Dependencies
 ===============
 
-On the Ocaml side, Blahcaml depends on PXP [3].  PXP is used by the
-"safe" functions for validating the generated MathML against the
-official MathML2 DTD.
+On the Ocaml side, Blahcaml depends on PXP [3].  PXP is used by the "safe"
+functions for validating the generated MathML against the official MathML2 DTD.
 
-There is no need to get the Blahtex code because the Blahcaml tarball
-ships with a snapshot of the relevant code from Blahtex.  This turned
-out to be the most practical solution because presently the Blahtex
-source has no provisions for building just the library and assumes that
-developers will just copy the code into their own projects.
+There is no need to get the Blahtex code because the Blahcaml tarball ships
+with a snapshot of the relevant code from Blahtex.  This turned out to be
+the most practical solution because presently the Blahtex source has no
+provisions for building just the library and assumes that developers will
+just copy the code into their own projects.
 
 The Blahtex code is contained in the 'src/blahtexcore', 'src/unicodeconverter',
 and 'src/messages' directories, and except for the makefiles, is bundled
 in a pristine form.  The copyright of this code is of course that of the
-Blahtex authors.
+Blahtex authors.  The version of Blahtex is 0.7.
 
 
 4. Building and installing
@@ -56,10 +57,10 @@ To generate the ocamldoc API documentation, use 'make apidoc'.
 ==========
 
 Blahcaml is distributed under the terms of the GNU GPL version 2.
-See LICENSE file for full license text.  The Blahtex portions bundled
-with the Blahcaml tarball are licensed in the same terms.  The tarball
-includes also the official MathML2 DTD from the W3C.  Check the COPYRIGHT
-file in the 'src/mathml2dtd/mathml2dtd.d' directory for details.
+See LICENSE file for full license text.  The Blahtex portions bundled with
+the Blahcaml tarball are licensed in the same terms.  The tarball includes
+also the official MathML2 DTD from the W3C.  Check the COPYRIGHT file in the
+'src/mathml2dtd/mathml2dtd.d' directory for details.
 
 
 References

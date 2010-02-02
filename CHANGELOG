@@ -1,0 +1,50 @@
+-------------------------
+(2010-02-03) version 2.0:
+
+  * Migrated to Blahtex 0.7.
+  * Mathml2dtd module now part of the API.
+  * DTD caching now done in Mathml2dtd.
+  * Improved namespace handling.
+  * add_xmlns option is now with_xmlns.
+
+
+-------------------------
+(2009-07-31) version 1.5:
+
+  * Version fix of previous release.
+
+
+-------------------------
+(2009-07-29) version 1.4:
+
+  * Added option to include xmlns in <math>.
+
+
+-------------------------
+(2009-07-26) version 1.3:
+
+  * Migrated to PXP 1.2.1
+  * More fine-tuned reporting of dependencies in META.
+
+
+-------------------------
+(2008-11-23) version 1.2:
+
+  * Compilation to shared library now works.
+  * Using Bkahcaml in dynlinking now supported.
+  * Improved error handling.
+  * Added demo about Ocsigen integration.
+
+
+-------------------------
+(2008-11-09) version 1.1:
+
+  * Mathml2dtd now a library of its own right.
+  * General reorganisation of the directory structure.
+
+
+-------------------------
+(2008-10-28) version 1.0:
+
+  * First public release.
+
