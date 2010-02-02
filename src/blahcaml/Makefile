@@ -46,9 +46,6 @@ blahcaml.cmx: blahcaml.ml
 blahtex_stubs.o: blahtex_stubs.cpp
 	g++ $(CCOPT) -I $(OCAML_STDLIB) -I $(BLAH_DIR) -I $(UCONV_DIR) -I $(MSG_DIR) -o $@ -c $<
 
-apidoc:
-	ocamlfind ocamldoc -I $(MATHML2DTD) -package pxp-engine,pxp-ulex-utf8 -v -html -d ../../doc/apidoc blahcaml.mli blahcaml.ml
-
 clean:
 	rm -f *.cm* *.a *.o *.so
 

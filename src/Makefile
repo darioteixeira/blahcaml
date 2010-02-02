@@ -32,9 +32,9 @@ lib:
 	make lib -C $(MATHML2DTD_DIR)
 	make lib -C $(BLAHCAML_DIR)
 
-apidoc: lib
-	mkdir -p doc/apidoc
-	make apidoc -C $(BLAHCAML_DIR)
+apidoc: lib $(MATHML2DTD_DIR)/mathml2dtd.mli $(BLAHCAML_DIR)/blahcaml.mli $(BLAHCAML_DIR)/blahcaml.ml
+	mkdir -p ../doc/apidoc
+	ocamlfind ocamldoc -package pxp-engine,pxp-ulex-utf8 -I $(MATHML2DTD_DIR) -I $(BLAHCAML_DIR) -html -d ../doc/apidoc $(MATHML2DTD_DIR)/mathml2dtd.mli $(BLAHCAML_DIR)/blahcaml.mli $(BLAHCAML_DIR)/blahcaml.ml
 
 install: lib
 	ocamlfind install $(PKG_NAME) META $(FQTARGETS)

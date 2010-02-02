@@ -14,19 +14,20 @@
 
 
 (********************************************************************************)
-(**	{2 Public exceptions}							*)
+(**	{1 Public exceptions}							*)
 (********************************************************************************)
 
 exception Blahtex_error of string
 exception Unicode_error
+exception Invalid_root
 
 
 (********************************************************************************)
-(**	{2 Public functions}							*)
+(**	{1 Public functions}							*)
 (********************************************************************************)
 
 val init_dtd: unit -> unit
-val sanitize_mathml: string -> string
-val unsafe_mathml_from_tex: ?add_xmlns:bool -> string -> string
-val safe_mathml_from_tex: ?add_xmlns:bool -> string -> string
+val sanitize_mathml: ?with_xmlns:bool -> string -> string
+val unsafe_mathml_from_tex: ?with_xmlns:bool -> string -> string
+val safe_mathml_from_tex: ?with_xmlns:bool -> string -> string
 
