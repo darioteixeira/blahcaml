@@ -5,7 +5,8 @@
   * Mathml2dtd module now part of the API.
   * DTD caching now done in Mathml2dtd.
   * Improved namespace handling.
-  * add_xmlns option is now with_xmlns.
+  * add_xmlns option is now called with_xmlns.
+  * Various clarifications in APIDOC.
 
 
 -------------------------

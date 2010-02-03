@@ -124,6 +124,13 @@ let unsafe_mathml_from_tex ?(with_xmlns = true) tex_str =
 	or {!Unicode_error} will be raised.  Note that if the DTD has never been
 	initialised, this function will automatically do so upon its first invocation
 	(see {!init_dtd} for more information).
+
+	{b Disclaimer:} There is presently no evidence supporting the assumption that
+	the output from the Blahtex library is untrustworthy security-wise.  Therefore,
+	if you trust Blahtex with 100% certainty, then you may disregard this function
+	and use {!unsafe_mathml_from_tex} instead.  Nevertheless, given the complexity
+	of Blahtex's task and the size of its code, caution dictates invoking this
+	function {i just in case}.
 *)
 let safe_mathml_from_tex ?(with_xmlns = true) tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex ~with_xmlns tex_str
