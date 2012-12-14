@@ -1,6 +1,6 @@
 (********************************************************************************)
 (*	Blahcaml.ml
-	Copyright (c) 2008-2010 Dario Teixeira (dario.teixeira@yahoo.com)
+	Copyright (c) 2008-2012 Dario Teixeira (dario.teixeira@yahoo.com)
 	This software is distributed under the terms of the GNU GPL version 2.
 	See LICENSE file for full license text.
 *)
@@ -15,9 +15,6 @@ open Pxp_document
 (**	{1 Private functions and values}					*)
 (********************************************************************************)
 
-(**	Interface to the C function that actually does the conversion.
-*)
-external unsafe_mathml_from_tex_stub: string -> string = "unsafe_mathml_from_tex_stub"
 
 
 (********************************************************************************)
@@ -135,13 +132,4 @@ let unsafe_mathml_from_tex ?(with_xmlns = true) tex_str =
 let safe_mathml_from_tex ?(with_xmlns = true) tex_str =
 	let unsafe_mathml = unsafe_mathml_from_tex ~with_xmlns tex_str
 	in sanitize_mathml ~with_xmlns unsafe_mathml
-
-
-(********************************************************************************)
-(**	{1 Module initialisation}						*)
-(********************************************************************************)
-
-let () =
-	Callback.register_exception "blahtex_error" (Blahtex_error "");
-	Callback.register_exception "unicode_error" Unicode_error
 
