@@ -70,9 +70,10 @@ public:
         return mManager.get();
     }
 
-    void ProcessInput(const std::wstring& input);
+    void ProcessInput(const std::wstring& input, bool displayStyle = false);
     std::wstring GetMathml();
     std::wstring GetPurifiedTex();
+    std::wstring GetPurifiedTexOnly();
 #ifdef BLAHTEXML_USING_XERCES
     void PrintAsSAX2(ContentHandler& sax, const std::wstring& prefix, bool ignoreFirstmrow) const;
 #endif

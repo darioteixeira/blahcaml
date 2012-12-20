@@ -310,7 +310,7 @@ Manager::Manager()
     mStrictSpacingRequested = false;
 }
 
-void Manager::ProcessInput(const wstring& input, bool texvcCompatibility)
+void Manager::ProcessInput(const wstring& input, bool texvcCompatibility, bool displayStyle)
 {
     // Here are all the commands which get "Reserved" tacked on the end
     // before the MacroProcessor sees them:
@@ -404,7 +404,7 @@ void Manager::ProcessInput(const wstring& input, bool texvcCompatibility)
     try
     {
         TexProcessingState topState;
-        topState.mStyle = LayoutTree::Node::cStyleText;
+        topState.mStyle = displayStyle ? LayoutTree::Node::cStyleDisplay : LayoutTree::Node::cStyleText;
         topState.mColour = 0;
         mLayoutTree = mParseTree->BuildLayoutTree(topState);
         mLayoutTree->Optimise();
@@ -553,6 +553,27 @@ wstring Manager::GeneratePurifiedTex(
     output << L"\\end{document}\n";
 
     return output.str();
+}
+
+wstring Manager::GeneratePurifiedTexOnly() const
+{
+    if (!mParseTree.get())
+        throw logic_error(
+            "Parse tree not yet built in Manager::GeneratePurifiedTex"
+        );
+
+    wostringstream os;
+    LatexFeatures features;
+    mParseTree->GetPurifiedTex(os, features, cFontEncodingDefault);
+    wstring temp = os.str();
+    wstring result;
+    bool opening = true;
+    for(unsigned int i=0; i<temp.size(); i++) {
+        if ((!opening) || (temp[i] != ' '))
+            result += temp[i];
+        opening = (temp[i] == '{');
+    }
+    return result;
 }
 
 }

@@ -54,7 +54,8 @@ public:
     // command line option "--texvc-compatible-commands".
     void ProcessInput(
         const std::wstring& input,
-        bool texvcCompatibility = false
+        bool texvcCompatibility = false,
+        bool displayStyle = false
     );
 
     // GenerateMathml generates a XML tree containing MathML markup.
@@ -69,6 +70,10 @@ public:
     std::wstring GeneratePurifiedTex(
         const PurifiedTexOptions& options
     ) const;
+
+    // GeneratePurifiedTexOnly returns a string containing only
+    // the equation in LaTeX
+    std::wstring GeneratePurifiedTexOnly() const;
 
     // A few accessor functions.
     const ParseTree::MathNode* GetParseTree() const
