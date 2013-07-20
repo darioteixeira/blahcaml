@@ -10,10 +10,10 @@ test.cmxs: test.cmxa
 	ocamlopt -shared -linkall -I `pwd` -o $@ $<
 
 test.cmo: test.ml
-	ocamlfind ocamlc -thread -package lwt,ocsigen,blahcaml -c $<
+	ocamlfind ocamlc -thread -package lwt,eliom.server,blahcaml -c $<
 
 test.cmx: test.ml
-	ocamlfind ocamlopt -thread -package lwt,ocsigen,blahcaml -c $<
+	ocamlfind ocamlopt -thread -package lwt,eliom.server,blahcaml -c $<
 
 clean:
 	rm -f *.cm* *.o *.a

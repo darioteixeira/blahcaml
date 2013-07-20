@@ -9,23 +9,24 @@
 (*	Example using Blahcaml inside Ocsigen/Eliom module.
 *)
 
-open XHTML.M
+open Eliom_content
+open Html5.F
 
 
 let test_service =
-	Eliom_services.new_service 
+	Eliom_service.service 
 		~path: [""]
-		~get_params: Eliom_parameters.unit
+		~get_params: Eliom_parameter.unit
 		()
 
 
 let equation =
 	let mathml = Blahcaml.safe_mathml_from_tex "y = \\frac{y^2}{\\sqrt{y-1}}" in
-	let elem : [> `Div] XHTML.M.elt = XHTML.M.unsafe_data mathml in
+	let elem : [> `Div] Html5.F.elt = Html5.F.unsafe_data mathml in
 	elem
 
 
-let test_handler sp () () =
+let test_handler () () =
 	Lwt.return
 		(html
 			(head (title (pcdata "Test")) [])
@@ -33,5 +34,5 @@ let test_handler sp () () =
 
 
 let () =
-	Eliom_predefmod.Xhtml.register test_service test_handler
+	Eliom_registration.Html5.register test_service test_handler
 
