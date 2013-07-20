@@ -1,4 +1,11 @@
 -------------------------
+(2013-07-20) version 2.1:
+
+  * Migrated to Blahtex 0.9.
+  * Using lazy instead of ref to cache DTD.
+
+
+-------------------------
 (2010-02-03) version 2.0:
 
   * Migrated to Blahtex 0.7.

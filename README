@@ -1,8 +1,8 @@
 =========================================================================
-| README for Blahcaml 2.0						|
+| README for Blahcaml 2.1						|
 |									|
 | Dario Teixeira (dario.teixeira@yahoo.com)				|
-| February 2010								|
+| July 2013								|
 =========================================================================
 
 1. Overview
@@ -41,7 +41,7 @@ just copy the code into their own projects.
 The Blahtex code is contained in the 'src/blahtexcore', 'src/unicodeconverter',
 and 'src/messages' directories, and except for the makefiles, is bundled
 in a pristine form.  The copyright of this code is of course that of the
-Blahtex authors.  The version of Blahtex is 0.7.
+Blahtex authors.  The version of Blahtex is 0.9.
 
 
 4. Building and installing
