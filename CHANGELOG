@@ -3,6 +3,7 @@
 
   * Migrated to Blahtex 0.9.
   * Using lazy instead of ref to cache DTD.
+  * Ported Ocsigen/Eliom sample to Eliom 3.0.
 
 
 -------------------------
