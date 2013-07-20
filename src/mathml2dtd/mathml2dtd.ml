@@ -77,19 +77,14 @@ let generate () =
 			failwith "Internal error during parsing of built-in MathML2 DTD"
 
 
-let cache = ref None
+let cache = lazy (generate ())
 
 
 (********************************************************************************)
 (**	{1 Public functions}							*)
 (********************************************************************************)
 
-let init () = match !cache with
-	| Some dtd -> ()
-	| None	   -> cache := Some (generate ())
+let init () = ignore (Lazy.force cache)
 
-
-let get () = match !cache with
-	| Some dtd -> dtd
-	| None	   -> let dtd = generate () in cache := Some dtd; dtd
+let get () = Lazy.force cache
 
